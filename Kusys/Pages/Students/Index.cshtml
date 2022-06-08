@@ -1,0 +1,97 @@
+﻿@page
+@model Kusys.Pages.Students.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].BirthDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].Course)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student[0].Users)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Student) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BirthDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.CourseId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Users.UserName)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.StudentId">Edit</a> |
+                <a onclick="openDialog(@item.StudentId)" asp-page="./Details" asp-route-id="@item.StudentId" data-bs-toggle="modal" data-bs-target="#exampleModal">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.StudentId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div id="studentDetails" class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <a href="#" id="editButton" type="button" class="btn btn-primary">Edit</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script lang="js">
+    function openDialog(id){
+        var href = event.target.href;
+        fetch(href,{
+            
+        })
+        .then(a => a.text())
+        .then(html => {
+            document.getElementById("studentDetails").innerHTML = html;
+            document.getElementById("editButton").href = '/Students/Edit/?id=' + id;
+        });
+
+        event.preventDefault();
+        event.stopPropagation();
+    }
+</script>
